@@ -12,14 +12,14 @@ pygame.display.set_caption("Sand Simulation")
 clock = pygame.time.Clock()
 
 # Colors
-BLACK = (0, 0, 0)
-YELLOW = (255, 200, 0) 
-WHITE = (255, 255, 255)
+WHITE = (0, 0, 0)
+YELLOW = (255, 200, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 SAND1 = (210, 180, 140)
 SAND2 = (169, 142, 107)
+GRAY = (100, 100, 100)
 
 COLOR = (255, 200, 0)  # current drawing color
 sand_choice = [SAND1, SAND2]
@@ -54,7 +54,7 @@ custom_error = ""
 # Main loop
 while True:
     if mode == "main":
-        screen.fill(BLACK)
+        screen.fill(GRAY)
 
         for event in pygame.event.get():
 
@@ -88,21 +88,41 @@ while True:
 
             # change colors
             if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+                if rand == True:
+                    rand = False
                 sand = not sand
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+                if sand == True or rand == True:
+                    sand = False
+                    rand = False
                 COLOR = (255, 200, 0)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_3:
+                if sand == True or rand == True:
+                    sand = False
+                    rand = False
                 COLOR = (255, 0, 0)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_4:
+                if sand == True or rand == True:
+                    sand = False
+                    rand = False
                 COLOR = (0, 0, 255)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_5:
-               COLOR = (0, 255, 0)
+                if sand == True or rand == True:
+                    sand = False
+                    rand = False
+                COLOR = (0, 255, 0)
             
             # rgb randomizer
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_6:
-                 rand = not rand
+                if sand == True:
+                    sand = False
+                    rand = False
+                rand = not rand
             # custom color
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_7:
+                if sand == True or rand == True:
+                    sand = False
+                    rand = False   
                 mode = "cust"
 
         if st:
@@ -158,7 +178,7 @@ while True:
 
     elif mode == "cust":
         # Custom color input screen
-        screen.fill(BLACK)
+        screen.fill(GRAY)
 
         display_text("Enter RGB values as R,G,B", text_font, WHITE, 50, 40)
         display_text("Example: 255,200,0", text_font, WHITE, 50, 80)
