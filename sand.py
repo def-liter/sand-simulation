@@ -6,7 +6,7 @@ pygame.init()
 
 # Screen settings
 WIDTH, HEIGHT = 800, 600
-CELL_SIZE = 5
+CELL_SIZE = 15
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Sand Simulation")
 clock = pygame.time.Clock()
@@ -127,4 +127,5 @@ while True:
         pass
     pygame.display.flip()
     clock.tick(60)
+
 
