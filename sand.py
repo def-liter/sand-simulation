@@ -43,7 +43,7 @@ while True:
 
     for event in pygame.event.get():
 
-        # ---- resize handling ----
+        # resize case
         if event.type == pygame.VIDEORESIZE:
             WIDTH, HEIGHT = event.w, event.h
             screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
@@ -58,7 +58,6 @@ while True:
                 if x < GRID_WIDTH and y < GRID_HEIGHT:
                     grid[x][y] = 1
                     particles.append([x, y])
-        # -------------------------
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -128,3 +127,4 @@ while True:
         pass
     pygame.display.flip()
     clock.tick(60)
+
