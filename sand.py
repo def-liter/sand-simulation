@@ -5,7 +5,7 @@ import random
 pygame.init()
 
 # Screen settings
-WIDTH, HEIGHT = 1200, 800
+WIDTH, HEIGHT = 800, 600
 CELL_SIZE = 15
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Sand Simulation")
@@ -130,13 +130,16 @@ while True:
 
         # Add new sand with mouse
         if pygame.mouse.get_pressed()[0]:
+            pygame.event.set_grab(True)
             mx, my = pygame.mouse.get_pos()
             cell_x = mx // CELL_SIZE
             cell_y = my // CELL_SIZE
             if cell_x < GRID_WIDTH and cell_y < GRID_HEIGHT:
                 if grid[cell_x][cell_y] == 0:
                     grid[cell_x][cell_y] = 1
-                    particles.append([cell_x, cell_y, COLOR])  # store color!
+                    particles.append([cell_x, cell_y, COLOR])
+        else:
+            pygame.event.set_grab(False)
 
         # Update particles
         for particle in particles:
