@@ -4,14 +4,14 @@ import random
 
 pygame.init()
 
-# Screen settings
-WIDTH, HEIGHT = 800, 600
+# screen settings
+WIDTH, HEIGHT = 1200, 800
 CELL_SIZE = 15
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Sand Simulation")
 clock = pygame.time.Clock()
 
-# Colors
+# colors
 WHITE = (0, 0, 0)
 YELLOW = (255, 200, 0)
 RED = (255, 0, 0)
@@ -21,16 +21,16 @@ SAND1 = (210, 180, 140)
 SAND2 = (169, 142, 107)
 GRAY = (100, 100, 100)
 
-COLOR = (255, 200, 0)  # current drawing color
+COLOR = (255, 200, 0)
 sand_choice = [SAND1, SAND2]
-# Grid size
+# grid size
 GRID_WIDTH = WIDTH // CELL_SIZE
 GRID_HEIGHT = HEIGHT // CELL_SIZE
 
 # 2D grid: 0 = empty, 1 = sand
 grid = [[0 for i in range(GRID_HEIGHT)] for i in range(GRID_WIDTH)]
 
-# List of sand particles: [x, y, color]
+# list of sand particles: [x, y, color]
 particles = []
 
 # how to use: display_text("text", text_font, (R, G, B), x, y)
@@ -47,11 +47,13 @@ st = False
 rand = False
 sand = True
 
-# Variables for custom color input
+# var for custom color input
 custom_color_text = ""
 custom_error = ""
 
-# Main loop
+# sound
+sound = pygame.mixer.Sound('sand_sound.mp3')
+# main loop
 while True:
     if mode == "main":
         screen.fill(GRAY)
@@ -128,7 +130,7 @@ while True:
         if st:
             display_text("1=SAND 2=YELLOW 3=RED 4=BLUE 5=GREEN 6=RANDOM 7=CUSTOM", text_font, (GREEN), 0, 0)
 
-        # Add new sand with mouse
+        # add new sand with mouse
         if pygame.mouse.get_pressed()[0]:
             pygame.event.set_grab(True)
             mx, my = pygame.mouse.get_pos()
@@ -138,38 +140,40 @@ while True:
                 if grid[cell_x][cell_y] == 0:
                     grid[cell_x][cell_y] = 1
                     particles.append([cell_x, cell_y, COLOR])
+            if not pygame.mixer.get_busy():
+                sound.play(-1)
         else:
             pygame.event.set_grab(False)
-
-        # Update particles
+            sound.stop()
+        # update particles
         for particle in particles:
             x, y, col = particle
 
-            # Check if can move down
+            # check if can move down
             if y + 1 < GRID_HEIGHT and grid[x][y + 1] == 0:
                 grid[x][y] = 0
                 grid[x][y + 1] = 1
                 particle[1] += 1
 
-            # Try down-left
+            # try down-left
             elif x > 0 and y + 1 < GRID_HEIGHT and grid[x - 1][y + 1] == 0:
                 grid[x][y] = 0
                 grid[x - 1][y + 1] = 1
                 particle[0] -= 1
                 particle[1] += 1
 
-            # Try down-right
+            # try down-right
             elif x + 1 < GRID_WIDTH and y + 1 < GRID_HEIGHT and grid[x + 1][y + 1] == 0:
                 grid[x][y] = 0
                 grid[x + 1][y + 1] = 1
                 particle[0] += 1
                 particle[1] += 1
 
-        # Draw particles
+        # draw particles
         for x, y, col in particles:
             pygame.draw.rect(screen, col, (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
-        # Randomize drawing color if active
+        # randomize drawing color if active
         if rand:
             COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         # sand color
@@ -180,7 +184,7 @@ while True:
         clock.tick(60)
 
     elif mode == "cust":
-        # Custom color input screen
+        # color input screen
         screen.fill(GRAY)
 
         display_text("Enter RGB values as R,G,B", text_font, WHITE, 50, 40)
@@ -205,11 +209,11 @@ while True:
                     custom_error = ""
                     mode = "main"
 
-                # Backspace
+                # backspace
                 elif event.key == pygame.K_BACKSPACE:
                     custom_color_text = custom_color_text[:-1]
 
-                # Enter = try to set new color
+                # enter = try to set new color
                 elif event.key == pygame.K_RETURN:
                     try:
                         r, g, b = map(int, custom_color_text.split(","))
