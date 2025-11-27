@@ -48,6 +48,7 @@ rand = False
 sand = True
 
 # var for custom color input
+custom_cell_text = " "
 custom_color_text = ""
 custom_error = ""
 
@@ -97,22 +98,22 @@ while True:
                 if sand == True or rand == True:
                     sand = False
                     rand = False
-                COLOR = (255, 200, 0)
+                COLOR = (YELLOW)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_3:
                 if sand == True or rand == True:
                     sand = False
                     rand = False
-                COLOR = (255, 0, 0)
+                COLOR = (RED)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_4:
                 if sand == True or rand == True:
                     sand = False
                     rand = False
-                COLOR = (0, 0, 255)
+                COLOR = (BLUE)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_5:
                 if sand == True or rand == True:
                     sand = False
                     rand = False
-                COLOR = (0, 255, 0)
+                COLOR = (GREEN)
             
             # rgb randomizer
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_6:
@@ -125,10 +126,12 @@ while True:
                 if sand == True or rand == True:
                     sand = False
                     rand = False   
-                mode = "cust"
-
+                mode = "set_color"
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_8:
+                mode = "brush_size"
         if st:
-            display_text("1=SAND 2=YELLOW 3=RED 4=BLUE 5=GREEN 6=RANDOM 7=CUSTOM", text_font, (GREEN), 0, 0)
+            display_text("1=SAND 2=YELLOW 3=RED 4=BLUE 5=GREEN", text_font, (GREEN), 0, 0) 
+            display_text("6=RANDOM 7=CUSTOM-COLLOR 8=CUSTOM-SIZE", text_font, (GREEN), 0, 25)
 
         # add new sand with mouse
         if pygame.mouse.get_pressed()[0]:
@@ -154,14 +157,14 @@ while True:
                 grid[x][y] = 0
                 grid[x][y + 1] = 1
                 particle[1] += 1
-
+            
             # try down-left
             elif x > 0 and y + 1 < GRID_HEIGHT and grid[x - 1][y + 1] == 0:
                 grid[x][y] = 0
                 grid[x - 1][y + 1] = 1
                 particle[0] -= 1
                 particle[1] += 1
-
+            
             # try down-right
             elif x + 1 < GRID_WIDTH and y + 1 < GRID_HEIGHT and grid[x + 1][y + 1] == 0:
                 grid[x][y] = 0
@@ -182,8 +185,7 @@ while True:
 
         pygame.display.flip()
         clock.tick(60)
-
-    elif mode == "cust":
+    elif mode == "set_color":
         # color input screen
         screen.fill(GRAY)
 
@@ -222,12 +224,61 @@ while True:
                         custom_error = ""
                         mode = "main"
                     except:
-                        custom_error = "Invalid format! Use: R,G,B"
+                        custom_error = "invalid format. use: R,G,B"
                         custom_color_text = ""
 
                 else:
                     custom_color_text += event.unicode
-
+                    
         pygame.display.flip()
         clock.tick(60)
+    
+    elif mode == "brush_size":
+        # color input screen
+        screen.fill(GRAY)
 
+        display_text("Enter brush size", text_font, WHITE, 50, 40)
+        display_text("15=(default)", text_font, WHITE, 50, 80)
+
+        display_text(custom_cell_text, large_font, WHITE, 50, 150)
+
+        if custom_error != "":
+            display_text(custom_error, text_font, RED, 50, 220)
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+
+                # ESC = return to main mode
+                if event.key == pygame.K_ESCAPE:
+                    custom_cell_text = ""
+                    custom_error = ""
+                    mode = "main"
+
+                # backspace
+                elif event.key == pygame.K_BACKSPACE:
+                    custom_cell_text = custom_cell_text[:-1]
+
+                # enter = try to set new color
+                elif event.key == pygame.K_RETURN:
+                    try:
+                        CELL_SIZE = int(custom_cell_text)
+                        GRID_WIDTH = WIDTH // CELL_SIZE
+                        GRID_HEIGHT = HEIGHT // CELL_SIZE
+                        grid = [[0 for _ in range(GRID_HEIGHT)] for _ in range(GRID_WIDTH)]
+                        particles.clear()
+                        custom_cell_text = ""
+                        custom_error = ""
+                        mode = "main"
+                    except:
+                        custom_error = "use only numbers"
+                        custom_cell_text = ""
+
+                else:
+                    custom_cell_text += event.unicode    
+        pygame.display.flip()
+        clock.tick(60)
