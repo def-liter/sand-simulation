@@ -129,9 +129,6 @@ while True:
                 mode = "set_color"
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_8:
                 mode = "brush_size"
-        if st:
-            display_text("1=SAND 2=YELLOW 3=RED 4=BLUE 5=GREEN", text_font, (GREEN), 0, 0) 
-            display_text("6=RANDOM 7=CUSTOM-COLLOR 8=CUSTOM-SIZE", text_font, (GREEN), 0, 25)
 
         # add new sand with mouse
         if pygame.mouse.get_pressed()[0]:
@@ -182,7 +179,10 @@ while True:
         # sand color
         if sand:
             COLOR = random.choice(sand_choice)
-
+        
+        if st:
+            display_text("1=SAND 2=YELLOW 3=RED 4=BLUE 5=GREEN", text_font, (GREEN), 0, 0) 
+            display_text("6=RANDOM 7=CUSTOM-COLLOR 8=CUSTOM-SIZE", text_font, (GREEN), 0, 25)
         pygame.display.flip()
         clock.tick(60)
     elif mode == "set_color":
