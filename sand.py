@@ -70,7 +70,7 @@ while True:
                 GRID_WIDTH = WIDTH // CELL_SIZE
                 GRID_HEIGHT = HEIGHT // CELL_SIZE
 
-                grid = [[0 for _ in range(GRID_HEIGHT)] for _ in range(GRID_WIDTH)]
+                grid = [[0 for i in range(GRID_HEIGHT)] for i in range(GRID_WIDTH)]
                 particles = []
                 for x, y, col in old_particles:
                     if x < GRID_WIDTH and y < GRID_HEIGHT:
@@ -234,7 +234,7 @@ while True:
         clock.tick(60)
     
     elif mode == "brush_size":
-        # color input screen
+        # size input screen
         screen.fill(GRAY)
 
         display_text("Enter brush size", text_font, WHITE, 50, 40)
@@ -269,7 +269,7 @@ while True:
                         CELL_SIZE = int(custom_cell_text)
                         GRID_WIDTH = WIDTH // CELL_SIZE
                         GRID_HEIGHT = HEIGHT // CELL_SIZE
-                        grid = [[0 for _ in range(GRID_HEIGHT)] for _ in range(GRID_WIDTH)]
+                        grid = [[0 for i in range(GRID_HEIGHT)] for i in range(GRID_WIDTH)]
                         particles.clear()
                         custom_cell_text = ""
                         custom_error = ""
