@@ -21,8 +21,8 @@ SAND1 = (210, 180, 140)
 SAND2 = (169, 142, 107)
 GRAY = (100, 100, 100)
 
-COLOR = (255, 200, 0)
 sand_choice = [SAND1, SAND2]
+COLOR = random.choice(sand_choice)
 # grid size
 GRID_WIDTH = WIDTH // CELL_SIZE
 GRID_HEIGHT = HEIGHT // CELL_SIZE
@@ -282,3 +282,4 @@ while True:
                     custom_cell_text += event.unicode    
         pygame.display.flip()
         clock.tick(60)
+
